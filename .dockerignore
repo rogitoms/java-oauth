@@ -1,0 +1,5 @@
+# filepath: /c:/Users/HP/Downloads/oauth/.dockerignore
+.git/
+.idea/
+*.iml
+*.log

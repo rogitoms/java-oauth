@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Clients</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Manage Clients</h1>
+        <a href="/admin/dashboard" class="btn btn-outline-secondary mb-3">Back to Dashboard</a>
+        
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Client Name</th>
+                    <th>Client ID</th>
+                    <th>Client Secret</th>
+                    <th>Redirect Uri</th>
+                    <th>Scope</th>
+                    <th>Grant Types</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="client : ${clients}">
+                    <td th:text="${client.clientName}"></td>
+                    <td th:text="${client.clientId}"></td>
+                    <td th:text="${client.clientSecret}"></td>
+                    <td th:text="${client.redirectUris}"></td>
+                    <td th:text="${client.scope}"></td>
+                    <td th:text="${client.grantTypes}"></td>
+                    <td>
+                        <button type="button" class="btn btn-warning btn-sm" 
+                                data-bs-toggle="modal" th:attr="data-bs-target='#editClientModal' + ${client.clientId}">
+                            Edit
+                        </button>
+                        <form th:action="@{/admin/deleteClient}" method="post" class="d-inline">
+                            <input type="hidden" name="clientId" th:value="${client.clientId}">
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClientModal">
+            Add Client
+        </button>
+
+        <!-- EDIT CLIENT MODALS -->
+        <div th:each="client : ${clients}" th:id="'editClientModal' + ${client.clientId}" class="modal fade" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Client</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/admin/editClient}" method="post">
+                            <input type="hidden" name="clientId" th:value="${client.clientId}">
+                            <label>Client Name:</label>
+                            <input type="text" name="clientName" th:value="${client.clientName}" class="form-control">
+                            <label>Redirect Uri:</label>
+                            <input type="text" name="redirectUris" th:value="${client.redirectUris}" class="form-control">
+                            <label>Scope:</label>
+                            <input type="text" name="scope" th:value="${client.scope}" class="form-control">
+                            <label>Grant Types:</label>
+                            <input type="text" name="grantTypes" th:value="${client.grantTypes}" class="form-control">
+                            <button type="submit" class="btn btn-success mt-2">Update</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ADD CLIENT MODAL -->
+        <div class="modal fade" id="addClientModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add New Client</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form th:action="@{/admin/addClient}" method="post">
+                            <label>Client Name:</label>
+                            <input type="text" name="clientName" required class="form-control">
+                            <label>Redirect Uri:</label>
+                            <input type="text" name="redirectUris" required class="form-control">
+                            <label>Scope:</label>
+                            <input type="text" name="scope" required class="form-control">
+                            <label>Grant Types:</label>
+                            <input type="text" name="grantTypes" required class="form-control">
+                            <button type="submit" class="btn btn-success mt-2">Create Client</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

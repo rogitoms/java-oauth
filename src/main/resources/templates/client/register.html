@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register OAuth Client</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="text-center">Register OAuth Client</h3>
+                    </div>
+                    <div class="card-body">
+
+                        <!-- Success Message -->
+                        <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+
+                        <!-- Error Message -->
+                        <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+                        <form th:action="@{/client/register}" method="post">
+                            <div class="form-group">
+                                <label for="clientName">Client Name</label>
+                                <input type="text" class="form-control" id="clientName" name="clientName" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="redirectUri">Redirect URI</label>
+                                <input type="url" class="form-control" id="redirectUri" name="redirectUri" required>
+                                <small class="form-text text-muted">The URI where users will be redirected after authorization</small>
+                            </div>
+
+                            
+
+                            <button type="submit" class="btn btn-primary btn-block">Register Client</button>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
